@@ -1,0 +1,52 @@
+.PHONY: all main.o hello.o factorial.o clean
+
+
+SRCFLDR=src/
+OBJFLDR=obj/
+OUTFLDR=out/
+ELF_FILE=HelloTSim.elf
+
+GPP = tricore-g++
+FFUNC = -ffunction-sections -msmall-data=65535 -msmall-const=65535
+O_LEVEL = -O0
+
+PATH_TC161_DConfig = C:\WorkSpace\make\make_g++\tsim\tc161\DConfig
+PATH_TC161_MConfig = C:\WorkSpace\make\make_g++\tsim\tc161\MConfig
+
+MCPU_TYPE=tc23xx
+
+TSIM = tsim
+#TSIM = tsim16
+TSIM = tsim16p_e
+#TSIM = tsim16p_e_astep
+#TSIM = tsim1311
+
+#tsim16p_e
+#tc161
+# -c  -  Compile and assemble, but do not link
+# -Wall  -  turns warnings
+# -o <file>  -  Place the output into <file>
+
+all: main.o hello.o factorial.o
+#	$(GPP) -mcpu=tc23xx   -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o HelloTSim.elf main.o hello.o factorial.o
+	$(GPP) -mcpu=$(MCPU_TYPE) -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o $(ELF_FILE) $^
+	@echo running rule
+	$(TSIM) -DConfig $(PATH_TC161_DConfig) -MConfig $(PATH_TC161_MConfig) -h -s -H -disable-watchdog -o $(ELF_FILE) -log-file tsim.log
+	@echo  -- end of make
+
+%.o: $(SRCFLDR)%.cpp
+	$(GPP) -c $<
+	
+main.o: $(SRCFLDR)main.cpp
+	$(GPP) -mcpu=$(MCPU_TYPE) -c -o main.o -g  -ffunction-sections -msmall-data=65535 -msmall-const=65535 $(O_LEVEL) -fno-common $(STD_CPP11)  -Wall -W -Werror -Isrc/h $(SRCFLDR)main.cpp
+
+hello.o: $(SRCFLDR)hello.cpp
+	$(GPP) -mcpu=$(MCPU_TYPE) -c -o hello.o -g  -ffunction-sections -msmall-data=65535 -msmall-const=65535 $(O_LEVEL) -fno-common $(STD_CPP11)  -Wall -W -Werror -Isrc/h $(SRCFLDR)hello.cpp
+
+factorial.o:  $(SRCFLDR)factorial.cpp
+	$(GPP) -mcpu=$(MCPU_TYPE) -c -o factorial.o -g  -ffunction-sections -msmall-data=65535 -msmall-const=65535 $(O_LEVEL) -fno-common $(STD_CPP11)  -Wall -W -Werror -Isrc/h $(SRCFLDR)factorial.cpp
+
+	
+clean:
+	rm -rf *.o
+	rm -rf *.elf
