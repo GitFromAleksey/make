@@ -41,12 +41,13 @@ TSIM = tsim16p_e
 # -o <file>  -  Place the output into <file>
 
 all: main.o hello.o factorial.o
-	$(GPP) -mcpu=tc23xx   -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o HelloTSim.elf main.o hello.o factorial.o
-	
+#	$(GPP) -mcpu=tc23xx   -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o HelloTSim.elf main.o hello.o factorial.o
+	$(GPP) -mcpu=tc23xx -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o HelloTSim.elf $^
 	@echo running rule
 	$(TSIM) -DConfig $(PATH_TC161_DConfig) -MConfig $(PATH_TC161_MConfig) -h -s -H -disable-watchdog -o HelloTSim.elf -log-file tsim.log
 	@echo  -- end of make
 
+	
 main.o: $(SRCFLDR)main.cpp
 	$(GPP) -mcpu=tc23xx -c -o main.o -g  -ffunction-sections -msmall-data=65535 -msmall-const=65535 -O0 -fno-common $(STD_CPP11)  -Wall -W -Werror -Isrc/h $(SRCFLDR)main.cpp
 
