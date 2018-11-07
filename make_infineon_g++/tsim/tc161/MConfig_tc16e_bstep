@@ -1,0 +1,22 @@
+# Memory configuration file for Aurix TC1.6E variants
+# Refer to the target specification for scratchpad ram sizes
+SCRATCH CODE0 0xC0000000 0xC0005FFF 0
+SCRATCH DATA0 0xD0000000 0xD001BFFF 0
+
+# Definition of memory aliasing
+MIRROR 0x00100000 0xC0000000 0x00100000
+MIRROR 0x00000000 0xD0000000 0x00100000
+
+# Refer to the target specification for cache sizes, and number of ways
+CACHE CODE 0 16384 2 0
+CACHE DRB  0   128 4 0
+
+# If the peripherals are enabled, their base addresses must be specified.
+WDT_BASE_ADDRESS   0xF0036000
+STM_BASE_ADDRESS   0xF0000000
+GPTU0_BASE_ADDRESS 0xF0000600
+IR_BASE_ADDRESS    0xF0038000
+
+# Add any other memories here
+MYMEM 0xA0000000 0xAFFFFFFF 5 8
+

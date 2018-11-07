@@ -32,30 +32,20 @@ TSIM = tsim16p_e
 # $^ - Список всех зависимостей обрабатываемого правила
 # $@ - Имя цели обрабатываемого правила
 
-all: main_o hello_o factorial_o
+FILES=$(SRCFLDR)%.cpp
+
+all: %.o
 	@echo - first target of rule - $<
 	@echo - all targets of rule - $^
 	@echo - rule name - $@
-	
-#	$(GPP) -mcpu=tc23xx   -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o HelloTSim.elf main.o hello.o factorial.o
-#	$(GPP) -mcpu=$(MCPU_TYPE) -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o $(ELF_FILE) $^
-	$(GPP) -mcpu=$(MCPU_TYPE) -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o $(ELF_FILE) main.o hello.o factorial.o
-	@echo running rule
-	$(TSIM) -DConfig $(PATH_TC161_DConfig) -MConfig $(PATH_TC161_MConfig) -h -s -H -disable-watchdog -o $(ELF_FILE) -log-file tsim.log
-	@echo  -- end of make
 
-%.o: $(SRCFLDR)%.cpp
+#$(GPP) -mcpu=$(MCPU_TYPE) -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o $(ELF_FILE) main.o hello.o factorial.o
+
+
+.cpp.o: $(SRCFLDR)main.cpp
+	@echo files $(FILES)
 	$(GPP) -c $<
 	
-main_o: $(SRCFLDR)main.cpp
-	$(GPP) -mcpu=$(MCPU_TYPE) -c -o main.o -g  -ffunction-sections -msmall-data=65535 -msmall-const=65535 $(O_LEVEL) -fno-common $(STD_CPP11)  -Wall -W -Werror -Isrc/h $(SRCFLDR)main.cpp
-
-hello_o: $(SRCFLDR)hello.cpp
-	$(GPP) -mcpu=$(MCPU_TYPE) -c -o hello.o -g  -ffunction-sections -msmall-data=65535 -msmall-const=65535 $(O_LEVEL) -fno-common $(STD_CPP11)  -Wall -W -Werror -Isrc/h $(SRCFLDR)hello.cpp
-
-factorial_o:  $(SRCFLDR)factorial.cpp
-	$(GPP) -mcpu=$(MCPU_TYPE) -c -o factorial.o -g  -ffunction-sections -msmall-data=65535 -msmall-const=65535 $(O_LEVEL) -fno-common $(STD_CPP11)  -Wall -W -Werror -Isrc/h $(SRCFLDR)factorial.cpp
-
 	
 clean:
 	rm -rf *.o

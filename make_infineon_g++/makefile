@@ -8,7 +8,9 @@ SRCFLDR=src/
 OBJFLDR=obj/
 OUTFLDR=out/
 OBJECTS=$(SOURCES:.c=.o)
-EXECUTABLE=hello
+#EXECUTABLE=hello
+OUT_FILE_NAME=tsim.elf
+MAP_FILE_NAME=tsim.map
 
 LIB_FLDR_SET_CMD = --sysroot=
 LIB_FLDR_PATH = C:\devel\hightec\toolchains\tricore\v4.9.1.0-infineon-1.1\tricore\include\c++\4.9.4
@@ -25,27 +27,11 @@ FNOCOM = -fno-common --std=c99  -Wall -W -Werror
 PATH_bsp_tricore_TriBoard_TC23xx = C:/devel/hightec/toolchains/tricore/v4.9.1.0-infineon-1.1/bsp/tricore/TriBoard-TC23xx/
 PATH_common_tsim = C:/devel/hightec/toolchains/tricore/v4.9.1.0-infineon-1.1/bsp/tricore/common/tsim/
 PATH_common_tsim_tc161 = C:/devel/hightec/toolchains/tricore/v4.9.1.0-infineon-1.1/bsp/tricore/common/tsim/tc161/
-PATH_TC161_DConfig = C:\WorkSpace\make\make_g++\tsim\tc161\DConfig
-PATH_TC161_MConfig = C:\WorkSpace\make\make_g++\tsim\tc161\MConfig
 
-TSIM = tsim
-#TSIM = tsim16
-TSIM = tsim16p_e
-#TSIM = tsim16p_e_astep
-#TSIM = tsim1311
-
-#tsim16p_e
-#tc161
-# -c  -  Compile and assemble, but do not link
-# -Wall  -  turns warnings
-# -o <file>  -  Place the output into <file>
 
 all: main.o hello.o factorial.o
 #	$(GPP) -mcpu=tc23xx   -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o HelloTSim.elf main.o hello.o factorial.o
-	$(GPP) -mcpu=tc23xx -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o HelloTSim.elf $^
-	@echo running rule
-	$(TSIM) -DConfig $(PATH_TC161_DConfig) -MConfig $(PATH_TC161_MConfig) -h -s -H -disable-watchdog -o HelloTSim.elf -log-file tsim.log
-	@echo  -- end of make
+	$(GPP) -mcpu=tc23xx -Wl,-Map,$(MAP_FILE_NAME) -Wl,--extmap="a" -Wl,--gc-sections  -o $(OUT_FILE_NAME) $^
 
 	
 main.o: $(SRCFLDR)main.cpp
@@ -60,4 +46,4 @@ factorial.o:  $(SRCFLDR)factorial.cpp
 	
 clean:
 	rm -rf *.o
-	#rm -rf $(OUTFLDR)hello.exe
+	rm -rf *.map

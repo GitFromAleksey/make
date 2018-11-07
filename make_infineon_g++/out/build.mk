@@ -1,17 +1,28 @@
-.PHONY: all clean factorial.o hello.o main.o
+.PHONY: all clean 
 
-all: factorial.o hello.o main.o
-	tricore-g++ -mcpu=tc23xx -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections -o HelloTSim.elf factorial.o hello.o main.o
-	@echo -- end of make
+all: ../out/CompilerGnuc.o ../out/factorial.o ../out/hello.o ../out/main.o
+	tricore-g++ -mcpu=tc23xx -Wl,-Map,../out/artifacts/HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections -o ../out/artifacts/HelloTSim.elf ../out/CompilerGnuc.o ../out/factorial.o ../out/hello.o ../out/main.o
 
+../out/CompilerGnuc.o: ../src/CompilerGnuc.c ../out/CompilerGnuc.d ../out/inc.opt ../out/build.mk
+	tricore-g++ -mcpu=tc23xx -MT ../out/CompilerGnuc.o -MMD -MP -MF ../out/CompilerGnuc.Td @../out/inc.opt -c -o ../out/CompilerGnuc.o -g -ffunction-sections -msmall-data=65535 -msmall-const=65535 -O0 -fno-common --std=c++11 -Wall -W -Werror -Isrc/h ../src/CompilerGnuc.c
+	@mv -f ../out/CompilerGnuc.Td ../out/CompilerGnuc.d && touch ../out/CompilerGnuc.o
 
-factorial.o: ../src/factorial.cpp
-	tricore-g++ -mcpu=tc23xx -c -o factorial.o -g -ffunction-sections -msmall-data=65535 -msmall-const=65535 -O0 -fno-common --std=c++11 -Wall -W -Werror -Isrc/h ../src/factorial.cpp
+../out/factorial.o: ../src/factorial.cpp ../out/factorial.d ../out/inc.opt ../out/build.mk
+	tricore-g++ -mcpu=tc23xx -MT ../out/factorial.o -MMD -MP -MF ../out/factorial.Td @../out/inc.opt -c -o ../out/factorial.o -g -ffunction-sections -msmall-data=65535 -msmall-const=65535 -O0 -fno-common --std=c++11 -Wall -W -Werror -Isrc/h ../src/factorial.cpp
+	@mv -f ../out/factorial.Td ../out/factorial.d && touch ../out/factorial.o
 
-hello.o: ../src/hello.cpp
-	tricore-g++ -mcpu=tc23xx -c -o hello.o -g -ffunction-sections -msmall-data=65535 -msmall-const=65535 -O0 -fno-common --std=c++11 -Wall -W -Werror -Isrc/h ../src/hello.cpp
+../out/hello.o: ../src/hello.cpp ../out/hello.d ../out/inc.opt ../out/build.mk
+	tricore-g++ -mcpu=tc23xx -MT ../out/hello.o -MMD -MP -MF ../out/hello.Td @../out/inc.opt -c -o ../out/hello.o -g -ffunction-sections -msmall-data=65535 -msmall-const=65535 -O0 -fno-common --std=c++11 -Wall -W -Werror -Isrc/h ../src/hello.cpp
+	@mv -f ../out/hello.Td ../out/hello.d && touch ../out/hello.o
 
-main.o: ../src/main.cpp
-	tricore-g++ -mcpu=tc23xx -c -o main.o -g -ffunction-sections -msmall-data=65535 -msmall-const=65535 -O0 -fno-common --std=c++11 -Wall -W -Werror -Isrc/h ../src/main.cpp
+../out/main.o: ../src/main.cpp ../out/main.d ../out/inc.opt ../out/build.mk
+	tricore-g++ -mcpu=tc23xx -MT ../out/main.o -MMD -MP -MF ../out/main.Td @../out/inc.opt -c -o ../out/main.o -g -ffunction-sections -msmall-data=65535 -msmall-const=65535 -O0 -fno-common --std=c++11 -Wall -W -Werror -Isrc/h ../src/main.cpp
+	@mv -f ../out/main.Td ../out/main.d && touch ../out/main.o
+
+../out/%.d: ;
+.PRECIOUS: ../out/%.d
+include $(wildcard ../out/*.d)
+
 clean:
-	rm -rf *.o
+	rm -rf ../out/*.o
+	rm -rf ../out/*.d

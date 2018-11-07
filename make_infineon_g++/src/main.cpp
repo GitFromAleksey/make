@@ -8,24 +8,37 @@
 
 #include "functions.h"
 
+#include "Ifx_Types.h"
+
+
 // using namespace std;
 
-static const char *my_str = "\r\n		-> Hello world!";
+static const char *my_str = "\r\n\t\t\t-> Hello world!";
 
 int main()
 {
 	int i = 0;
-
+	int j = 0;
+	
+	printf("\r\n\t\t\tIFX_PI=%1.31f\r\n",IFX_PI);
+	
 	puts(my_str);
 		
     print_hello();
     // cout << endl;
     // cout << "The factorial of 5 is " << factorial(5) << endl;
-	
-	while(i < 0xF)
+
+	while(1)
 	{
-		printf("i = %u\r\n", i);
-		i++;
+		i = 0;
+		j++;
+		printf("j = %u\r\n", j);
+		while(i < 0xFFFF)
+		{
+		//	printf("i = %u\r\n", i);
+			i++;
+// 			k = i/j + k;
+		}
 	}
 
 	printf("i = %u\r\n\r\n", i);

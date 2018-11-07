@@ -48,9 +48,8 @@ with open(path_to_settings, 'r') as stream:
 
 # TODO: вынести в настройки
 core = 'tc23xx'
-language = 'cpp'
-
-cflags = "-c -Wall"
+language_link = 'cpp'
+artifacts_name = 'HelloTSim'
 
 inc_patterns = ['.h', '.hpp', '.inc']
 c_patterns = ['.c']
@@ -100,6 +99,7 @@ def update_file(f, content):
 
 add_obj_extension = lambda t: (t + '.o')
 
+
 # -----------------------------------------------------------------------------
 
 def make_prj_env(conf):
@@ -119,6 +119,10 @@ def make_prj_env(conf):
 
     # тут будут все имена исходных файлов
     all_obj = []
+    # тут будут все имена C файлов
+    all_c_obj = []
+    # тут будут все имена C++ файлов
+    all_cpp_obj = []
 
     # выбираются все пары ключ:значение из conf
     for env, env_cfg in conf.items():
@@ -140,6 +144,12 @@ def make_prj_env(conf):
                     elif file_ext in src_patterns:
                         # имя файла вписать в all_obj
                         all_obj.append(file_name)
+
+                        if file_ext in c_patterns:
+                            all_c_obj.append(file_name)
+                        elif file_ext in cpp_patterns:
+                            all_cpp_obj.append(file_name)
+
                         # в obj соотв. окружения дописать имя файла
                         penv[env]['obj'].append(file_name)
                         # в 'obj' вписать пару имя-путь
@@ -172,6 +182,7 @@ prj_env = make_prj_env(conf)
 # в obj будет словарь с исходниками вида имя:путь
 build_cfg = {
     'dir': build_dir,
+    'artifacts_dir': Path(build_dir, 'artifacts'),
     'inc':[*prj_env['tst']['inc'], *prj_env['src']['inc']],
     'obj':prj_env['obj'],
     'targets':{},  # name:[obj1, obj2]
@@ -196,7 +207,6 @@ for trgt in prj_env['src']['targets']:
         # вписать из конфига
         build_cfg['targets'][trgt] = import_objs
 
-
 build_join = lambda f: PurePath.joinpath(build_cfg['dir'], f)
 
 # путь билда + параметр + расширение
@@ -209,6 +219,10 @@ mk_file = build_join('build.mk')
 if not Path.exists(build_cfg['dir']):
     os.makedirs(build_cfg['dir'], exist_ok=True)
 
+# создаем папку для артефактов
+if not Path.exists(build_cfg['artifacts_dir']):
+    os.makedirs(build_cfg['artifacts_dir'], exist_ok=True)
+
 # в opt вписываются все папки с инклюдниками
 incopt_content = []
 for inc in build_cfg['inc']:
@@ -216,62 +230,95 @@ for inc in build_cfg['inc']:
 incopt_content = '\n'.join(incopt_content)
 
 update_file(incopt_file, incopt_content)
+
+all_obj = sorted(set(itertools.chain(*build_cfg['targets'].values(),
+                                     build_cfg['targets'].keys())))
 # -----------------------------------------------------------------------------
 mk_io = io.StringIO()
 
 collect = map(add_obj_extension, build_cfg["obj"].keys())
-joined_str = ' '.join(str(x) for x in collect)
+joined_str = ' '.join(str(build_join(x)) for x in collect)
 
-mk_io.write('.PHONY: all clean ' + joined_str + '\n\n')
+target_names = ' '.join(add_obj_extension(y) for y in all_obj)
+
+mk_io.write('.PHONY: all clean ' + '\n\n')
 # -----------------------------------------------------------------------------
 # таргет all:
 
-mk_io.write('all: {}\n'.format(joined_str))
+s = f'all: {joined_str}\n'
+mk_io.write(s)
 
-gcc = compiler_param[settings['platform']][language]['cmp']
-std = compiler_param[settings['platform']][language]['std']
+compiler_link = compiler_param[settings['platform']][language_link]['cmp']
+
+map_file_path = Path(build_cfg['artifacts_dir'], artifacts_name + '.map')
+elf_file_path = Path(build_cfg['artifacts_dir'], artifacts_name + '.elf')
 
 s = (
-        f'\t{gcc} -mcpu={core} '
-        f'-Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections -o HelloTSim.elf ' + joined_str
+        f'\t{compiler_link} -mcpu={core} '
+        f'-Wl,-Map,{map_file_path} -Wl,--extmap="a" -Wl,--gc-sections -o {elf_file_path} ' + joined_str
     )
-mk_io.write(s)
-mk_io.write('\n\t@echo -- end of make\n\n')
 
+mk_io.write(s + '\n')
 # -----------------------------------------------------------------------------
 # таргеты объектников
-all_obj = sorted(set(itertools.chain(*build_cfg['targets'].values(),
-                                     build_cfg['targets'].keys())))
+
+# TODO:
+# if all_c_obj
+language = 'cpp'
+
+compiler = compiler_param[settings['platform']][language]['cmp']
+std = compiler_param[settings['platform']][language]['std']
+
 for tn in all_obj:
-    trgt = tn
+    dep_file_path = str(build_join(tn)) + '.d'
+    trgt_path = build_join(tn)
     src = build_cfg['obj'][tn]
     cmp = compiler_from_fn(src)
     opt = incopt_file
     mk = mk_file
     s = (
         f'\n'
-        f'{trgt}.o: {src}\n'
-        f'\t{gcc} -mcpu={core} -c -o {trgt}.o -g '
+        f'{trgt_path}.o: {src} {dep_file_path} {opt} {mk_file}\n'
+        f'\t{compiler} -mcpu={core} '
+        f'-MT {trgt_path}.o -MMD -MP -MF {trgt_path}.Td @{opt} '
+        f'-c -o {trgt_path}.o -g '
         f'-ffunction-sections -msmall-data=65535 -msmall-const=65535 '
         f'-O0 -fno-common --std={std} '
         f'-Wall -W -Werror -Isrc/h {src}\n'
+        f'\t@mv -f {trgt_path}.Td {trgt_path}.d && touch {trgt_path}.o\n'
     )
     mk_io.write(s)
 
 # -----------------------------------------------------------------------------
-mk_io.write('clean:\n')
-mk_io.write('\trm -rf *.o')
+build_dir_slash = str(build_cfg['dir']) + '/'
+s = (
+    f'\n'
+    f'{build_dir_slash}%.d: ;'
+    f'\n'
+    f'.PRECIOUS: {build_dir_slash}%.d'
+    f'\n'
+    f'include $(wildcard {build_dir_slash}*.d)'
+)
+mk_io.write(s)
+
+# -----------------------------------------------------------------------------
+mk_io.write('\n\nclean:\n')
+s = (
+    f'\trm -rf {build_dir_slash}*.o\n'
+    f'\trm -rf {build_dir_slash}*.d'
+)
+mk_io.write(s)
 # -----------------------------------------------------------------------------
 
 update_file(mk_file, mk_io.getvalue())
 
-subprocess.run(f'make -f {mk_file}', check=True)
+subprocess.run(f'make -f {mk_file} all', check=True)
 
-subprocess.run(f'tsim16p_e '
-               f'-DConfig {path_tc161_dconfig} '
-               f'-MConfig {path_tc161_mconfig} '
-               f'-h -s -H -disable-watchdog -o HelloTSim.elf '
-               f'-log-file tsim.log', check=True)
+# subprocess.run(f'tsim16p_e '
+#                f'-DConfig {path_tc161_dconfig} '
+#                f'-MConfig {path_tc161_mconfig} '
+#                f'-h -s -H -disable-watchdog -o HelloTSim.elf '
+#                f'-log-file tsim.log', check=True)
 
 if __name__ == '__main__':
     pass
