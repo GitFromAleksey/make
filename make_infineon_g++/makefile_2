@@ -1,4 +1,4 @@
-.PHONY: all main.o hello.o factorial.o clean
+.PHONY: all main_o hello_o factorial_o clean
 
 
 SRCFLDR=src/
@@ -27,9 +27,19 @@ TSIM = tsim16p_e
 # -Wall  -  turns warnings
 # -o <file>  -  Place the output into <file>
 
-all: main.o hello.o factorial.o
+# Автоматические переменные
+# $< - Имя первой зависимости обрабатываемого правила
+# $^ - Список всех зависимостей обрабатываемого правила
+# $@ - Имя цели обрабатываемого правила
+
+all: main_o hello_o factorial_o
+	@echo - first target of rule - $<
+	@echo - all targets of rule - $^
+	@echo - rule name - $@
+	
 #	$(GPP) -mcpu=tc23xx   -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o HelloTSim.elf main.o hello.o factorial.o
-	$(GPP) -mcpu=$(MCPU_TYPE) -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o $(ELF_FILE) $^
+#	$(GPP) -mcpu=$(MCPU_TYPE) -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o $(ELF_FILE) $^
+	$(GPP) -mcpu=$(MCPU_TYPE) -Wl,-Map,HelloTSim.map -Wl,--extmap="a" -Wl,--gc-sections  -o $(ELF_FILE) main.o hello.o factorial.o
 	@echo running rule
 	$(TSIM) -DConfig $(PATH_TC161_DConfig) -MConfig $(PATH_TC161_MConfig) -h -s -H -disable-watchdog -o $(ELF_FILE) -log-file tsim.log
 	@echo  -- end of make
@@ -37,16 +47,17 @@ all: main.o hello.o factorial.o
 %.o: $(SRCFLDR)%.cpp
 	$(GPP) -c $<
 	
-main.o: $(SRCFLDR)main.cpp
+main_o: $(SRCFLDR)main.cpp
 	$(GPP) -mcpu=$(MCPU_TYPE) -c -o main.o -g  -ffunction-sections -msmall-data=65535 -msmall-const=65535 $(O_LEVEL) -fno-common $(STD_CPP11)  -Wall -W -Werror -Isrc/h $(SRCFLDR)main.cpp
 
-hello.o: $(SRCFLDR)hello.cpp
+hello_o: $(SRCFLDR)hello.cpp
 	$(GPP) -mcpu=$(MCPU_TYPE) -c -o hello.o -g  -ffunction-sections -msmall-data=65535 -msmall-const=65535 $(O_LEVEL) -fno-common $(STD_CPP11)  -Wall -W -Werror -Isrc/h $(SRCFLDR)hello.cpp
 
-factorial.o:  $(SRCFLDR)factorial.cpp
+factorial_o:  $(SRCFLDR)factorial.cpp
 	$(GPP) -mcpu=$(MCPU_TYPE) -c -o factorial.o -g  -ffunction-sections -msmall-data=65535 -msmall-const=65535 $(O_LEVEL) -fno-common $(STD_CPP11)  -Wall -W -Werror -Isrc/h $(SRCFLDR)factorial.cpp
 
 	
 clean:
 	rm -rf *.o
 	rm -rf *.elf
+
