@@ -1,3 +1,0 @@
-# TLF35584_cpp
-
-TLF35584 C++ Driver

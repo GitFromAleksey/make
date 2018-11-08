@@ -429,7 +429,7 @@ Discarded input sections
 
 Linker version: GNU ld version (GNU Binutils) 2.20 (TriCore) using BFD version (GNU Binutils) 2.20 (v2.3), Tool Version v2.7
 Name of linker executable: c:/devel/hightec/toolchains/tricore/v4.9.1.0-infineon-1.1/bin/../lib/gcc/tricore/4.9.4/../../../../tricore/bin/ld.exe
-Date of link run: Thu Nov 08 09:37:31 2018
+Date of link run: Thu Nov 08 18:17:32 2018
 Name of linker map file: ../out/artifacts/HelloTSim.map
 
 >>> Symbols (global (S = g) and static (S = l); sorted by address)
