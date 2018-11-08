@@ -1,4 +1,0 @@
-Archive member included because of file (symbol)
-
-c:/devel/hightec/toolchains/tricore/v4.9.1.0-infineon-1.1/bin/../lib/gcc/tricore/4.9.4/../../../../tricore/lib/tc161\libos.a(libos_exit.o)
-                              c:/devel/hightec/toolchains/tricore/v4.9.1.0-infineon-1.1/bin/../lib/gcc/tricore/4.9.4/crt0-tc23xx.o (_exit)

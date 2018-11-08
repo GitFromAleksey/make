@@ -196,8 +196,12 @@ for trgt in prj_env['src']['targets']:
     # взять путь исходника из словаря 'obj' (а он там точно есть)
     with open(prj_env['obj'][trgt], 'rb') as tf:
         import_objs = []
+        # print('--------------------> tf:',tf.name)
         for line in tf:
-            line = line.decode('utf8')
+
+            #print('line;',line)
+            #line = line.decode('utf8')
+            line = line.decode('cp1252')
             m = rep.match(line)
             if m:
                 # вписать из директивы

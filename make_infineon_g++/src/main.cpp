@@ -8,7 +8,7 @@
 
 #include "functions.h"
 
-#include "Ifx_Types.h"
+// #include "Ifx_Types.h"
 
 
 // using namespace std;
@@ -20,7 +20,7 @@ int main()
 	int i = 0;
 	int j = 0;
 	
-	printf("\r\n\t\t\tIFX_PI=%1.31f\r\n",IFX_PI);
+	//printf("\r\n\t\t\tIFX_PI=%1.31f\r\n",IFX_PI);
 	
 	puts(my_str);
 		
