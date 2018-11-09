@@ -1,10 +1,11 @@
 .PHONY: sim
 
-#SIM_FILE_NAME=C:\WorkSpace\ProjectLifeCycleAutomation\2_Out\Tricore_Gnuc\prog_tc.elf
-SIM_FILE_NAME=out\artifacts\HelloTSim.elf
+SIM_FILE_NAME=C:\WorkSpace\ProjectLifeCycleAutomation\2_Out\Tricore_Gnuc\prog_tc.elf
+#SIM_FILE_NAME=out\artifacts\HelloTSim.elf
 
 # -x 0 - forever
-SIM_TIME_CYCLES = -x 100000
+SIM_TIME_CYCLES = -x 5179
+#5178
 #SIM_TIME_CYCLES = -x 0
 
 PATH_TC161_CFG_FILES = .\tsim\tc161
@@ -40,6 +41,6 @@ TSIM = tsim16p_e.exe
 #TSIM = tsim1311
 
 sim: $(SIM_FILE_NAME)
-	#$(TSIM) $(COFG_INP_FILES) $(SIM_TIME_CYCLES) -h -s -H -disable-watchdog -o $(SIM_FILE_NAME) -log-file tsim.log
 	$(TSIM) $(COFG_INP_FILES) $(SIM_TIME_CYCLES) $(SIM_OPTIONS) -disable-watchdog -o $(SIM_FILE_NAME) -log-file tsim.log
+
 
