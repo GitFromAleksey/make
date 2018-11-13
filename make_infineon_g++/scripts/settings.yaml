@@ -1,3 +1,41 @@
-# платформы: tricore_gcc, gcc
+# папка, куда будут сложены продукты билда, Makefile и проч.
+# относительно расположения скрипта
+build_dir:
+  ../out
+
+# под какую платформу собирать проект
+# платформы: tricore, pc
 platform:
-  tricore_gcc
+  pc
+  
+# под какую платформу собирать тесты
+# платформы: tricore, pc
+tests_platform:
+  pc
+  
+# модель контроллера (для платформы tricore)
+# модели: tc23xx
+core:
+  tc23xx
+
+# пути к какой-то хурме для симуляции
+path_to_tc161_dconfig:
+  tsim/tc161/DConfig
+  
+path_to_tc161_mconfig:
+  tsim/tc161/MConfig
+
+# Что использовать для линковки - gcc или g++
+# Варианты: c или cpp соответственно
+# на stackoverflow пишут:
+# The main difference is that (assuming the files are detected as C++) 
+# g++ sets up the flags needed for linking with the C++ standard library. 
+# It may also set up exception handling.
+# Unless you're using C99 specific code in your C project I would actually 
+# just switch to compiling the whole thing as C++
+language_link:
+  cpp
+  
+# как назвать результирующие файлы
+artifacts_name:
+  HelloTSim

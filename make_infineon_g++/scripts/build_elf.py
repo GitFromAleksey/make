@@ -24,19 +24,71 @@ import io
 import subprocess
 import yaml
 from pathlib import Path, PurePath
+import sys
+import getopt
+
+argv = sys.argv[1:]
+
+try:
+    opts = getopt.getopt(argv, "abc")
+except getopt.GetoptError:
+    print('GetoptError i dunno')
+    sys.exit(2)
+
+build_tests = False
+run_tests = False
+build_project = False
+run_sim = False
+
+for opt in opts[1:]:
+    for x in opt:
+        if x == 'tests':
+            build_tests = True
+        elif x == 'build':
+            build_project = True
+        elif x == 'runtests':
+            run_tests = True
+        elif x == 'runsim':
+            run_sim = True
 
 conf = {
     'src': {'pth': ['0_Sm', '0_Src', 'src', 'source'], 'tgt': ''},
     'tst': {'pth': ['tests'], 'tgt': 'test_'},
-    }
+}
 
-# TODO: имена стрёмные
+inc_patterns = ['.h', '.hpp', '.inc']
+c_patterns = ['.c']
+cpp_patterns = ['.cpp', '.cxx']
+src_patterns = [*c_patterns, *cpp_patterns]
+
+compiler_param = {
+    'pc': {
+        'lang': {
+            'c': {
+                'cmp': 'gcc',
+                'std': 'c99'},
+            'cpp': {
+                'cmp': 'g++',
+                'std': 'c++11'},
+        },
+        'exec_extension': '.exe',
+    },
+
+    'tricore': {
+        'lang': {
+            'c': {
+                'cmp': 'tricore-gcc',
+                'std': 'c99'},
+            'cpp': {
+                'cmp': 'tricore-g++',
+                'std': 'c++11'},
+        },
+        'exec_extension': '.elf',
+    },
+}
+
+# -----------------------------------------------------------------------------
 path_to_settings = Path("settings.yaml")
-
-path_tc161_dconfig = Path('tsim/tc161/DConfig')
-path_tc161_mconfig = Path('tsim/tc161/MConfig')
-
-build_dir = Path('../out')
 
 # чтение настроек из файла
 settings = object()
@@ -46,35 +98,14 @@ with open(path_to_settings, 'r') as stream:
     except yaml.YAMLError as exc:
         print(exc)
 
-# TODO: вынести в настройки
-core = 'tc23xx'
-language_link = 'cpp'
-artifacts_name = 'HelloTSim'
-
-inc_patterns = ['.h', '.hpp', '.inc']
-c_patterns = ['.c']
-cpp_patterns = ['.cpp', '.cxx']
-src_patterns = [*c_patterns, *cpp_patterns]
-
-compiler_param = {
-    'gcc': {
-        'c': {
-            'cmp': 'gcc',
-            'std': 'c99'},
-        'cpp': {
-            'cmp': 'g++',
-            'std': 'c++11'},
-    },
-
-    'tricore_gcc': {
-        'c': {
-            'cmp': 'tricore-gcc',
-            'std': 'c99'},
-        'cpp': {
-            'cmp': 'tricore-g++',
-            'std': 'c++11'},
-    },
-}
+path_tc161_dconfig = Path(settings['path_to_tc161_dconfig'])
+path_tc161_mconfig = Path(settings['path_to_tc161_mconfig'])
+build_dir = Path(settings['build_dir'])
+core = settings['core']
+language_link = settings['language_link']
+artifacts_name = settings['artifacts_name']
+project_platform = settings['platform']
+tests_platform = settings['tests_platform']
 
 # -----------------------------------------------------------------------------
 # Функции
@@ -99,6 +130,12 @@ def update_file(f, content):
 
 add_obj_extension = lambda t: (t + '.o')
 
+# тут будут все имена исходных файлов
+all_obj = []
+# тут будут все имена C файлов
+all_c_obj = []
+# тут будут все имена C++ файлов
+all_cpp_obj = []
 
 # -----------------------------------------------------------------------------
 
@@ -116,13 +153,6 @@ def make_prj_env(conf):
         },
         'obj': {},
     }
-
-    # тут будут все имена исходных файлов
-    all_obj = []
-    # тут будут все имена C файлов
-    all_c_obj = []
-    # тут будут все имена C++ файлов
-    all_cpp_obj = []
 
     # выбираются все пары ключ:значение из conf
     for env, env_cfg in conf.items():
@@ -183,10 +213,12 @@ prj_env = make_prj_env(conf)
 build_cfg = {
     'dir': build_dir,
     'artifacts_dir': Path(build_dir, 'artifacts'),
+    'tests_dir': Path(build_dir, 'tests'),
     'inc':[*prj_env['tst']['inc'], *prj_env['src']['inc']],
     'obj':prj_env['obj'],
     'targets':{},  # name:[obj1, obj2]
-    }
+    'tests_targets':{},
+}
 
 # регулярка с директивой // @import
 rep = re.compile('// *@import +(.+)')
@@ -196,11 +228,7 @@ for trgt in prj_env['src']['targets']:
     # взять путь исходника из словаря 'obj' (а он там точно есть)
     with open(prj_env['obj'][trgt], 'rb') as tf:
         import_objs = []
-        # print('--------------------> tf:',tf.name)
         for line in tf:
-
-            #print('line;',line)
-            #line = line.decode('utf8')
             line = line.decode('cp1252')
             m = rep.match(line)
             if m:
@@ -211,10 +239,22 @@ for trgt in prj_env['src']['targets']:
         # вписать из конфига
         build_cfg['targets'][trgt] = import_objs
 
+# выбираются все имена исходников, которые записаны как таргеты tst
+for trgt in prj_env['tst']['targets']:
+    # взять путь исходника из словаря 'obj' (а он там точно есть)
+    with open(prj_env['obj'][trgt], 'rb') as tf:
+        import_objs = []
+
+        import_objs.append(trgt)
+        import_objs = sorted(list(set(import_objs)))
+        # вписать из конфига
+        build_cfg['tests_targets'][trgt] = import_objs
+
 build_join = lambda f: PurePath.joinpath(build_cfg['dir'], f)
+build_join_tests = lambda f: PurePath.joinpath(build_cfg['tests_dir'], f)
 
 # путь билда + параметр + расширение
-trgt_full_name = lambda t: Path(str(build_join(t)) + '.exe')
+# trgt_full_name = lambda t: Path(str(build_join(t)) + '.exe')
 
 incopt_file = build_join('inc.opt')
 mk_file = build_join('build.mk')
@@ -227,6 +267,10 @@ if not Path.exists(build_cfg['dir']):
 if not Path.exists(build_cfg['artifacts_dir']):
     os.makedirs(build_cfg['artifacts_dir'], exist_ok=True)
 
+# создаем папку для тестов
+if not Path.exists(build_cfg['tests_dir']):
+    os.makedirs(build_cfg['tests_dir'], exist_ok=True)
+
 # в opt вписываются все папки с инклюдниками
 incopt_content = []
 for inc in build_cfg['inc']:
@@ -235,62 +279,161 @@ incopt_content = '\n'.join(incopt_content)
 
 update_file(incopt_file, incopt_content)
 
-all_obj = sorted(set(itertools.chain(*build_cfg['targets'].values(),
+all_obj_src = sorted(set(itertools.chain(*build_cfg['targets'].values(),
                                      build_cfg['targets'].keys())))
+
+all_obj_tests = sorted(set(itertools.chain(*build_cfg['tests_targets'].values(),
+                                     build_cfg['tests_targets'].keys())))
+
+all_obj = all_obj_src + all_obj_tests
+
+# -----------------------------------------------------------------------------
+# temp = build_cfg['targets'].keys() build_cfg['tests_targets'].keys()
+collect_src = map(add_obj_extension, build_cfg['targets'].keys())
+collect_tests = map(add_obj_extension, build_cfg['tests_targets'].keys())
+
+joined_str_src = ' '.join(str(build_join(x)) for x in collect_src)
+joined_str_tests = ' '.join(str(build_join_tests(x)) for x in collect_tests)
+
+joined_str = joined_str_src + ' ' + joined_str_tests
 # -----------------------------------------------------------------------------
 mk_io = io.StringIO()
+mk_io.write('.PHONY: all clean all_tests ' + '\n\n')
 
-collect = map(add_obj_extension, build_cfg["obj"].keys())
-joined_str = ' '.join(str(build_join(x)) for x in collect)
-
-target_names = ' '.join(add_obj_extension(y) for y in all_obj)
-
-mk_io.write('.PHONY: all clean ' + '\n\n')
 # -----------------------------------------------------------------------------
 # таргет all:
 
-s = f'all: {joined_str}\n'
-mk_io.write(s)
+if project_platform == 'tricore':
+    tricore_specific_options = True
+else:
+    tricore_specific_options = False
 
-compiler_link = compiler_param[settings['platform']][language_link]['cmp']
+# таргет all создавать, только если есть таргеты объектников
+if all_obj:
+    s = f'all: {joined_str_src}\n'
+    mk_io.write(s)
 
-map_file_path = Path(build_cfg['artifacts_dir'], artifacts_name + '.map')
-elf_file_path = Path(build_cfg['artifacts_dir'], artifacts_name + '.elf')
+    compiler_link = compiler_param[project_platform]['lang'][language_link]['cmp']
 
-s = (
-        f'\t{compiler_link} -mcpu={core} '
-        f'-Wl,-Map,{map_file_path} -Wl,--extmap="a" -Wl,--gc-sections -o {elf_file_path} ' + joined_str
+    map_file_path = Path(build_cfg['artifacts_dir'], artifacts_name + '.map')
+    elf_file_path = Path(build_cfg['artifacts_dir'], artifacts_name + compiler_param[project_platform]['exec_extension'])
+
+    s = (
+            f'\t{compiler_link} '
+            f'-Wl,-Map,{map_file_path} -Wl,'
+        )
+
+    mk_io.write(s)
+
+    # TODO: разобраться с опциями компилятора
+    # и вынести это как-то поудачнее, чем в середину строки опций
+    if tricore_specific_options:
+        s = (
+            f'--extmap="a"'
+            f' -mcpu={core}'
+        )
+        mk_io.write(s)
+
+    s = (
+        f' -Wl,--gc-sections -o {elf_file_path} ' + joined_str_src
     )
+    mk_io.write(s + '\n')
 
-mk_io.write(s + '\n')
+# -----------------------------------------------------------------------------
+# таргет all_tests:
+# таргет all_tests создавать, только если есть таргеты объектников тестов
+
+if all_obj_tests:
+    s = f'\nall_tests: '
+    mk_io.write(s)
+    for tn in all_obj_tests:
+        extension = compiler_param[tests_platform]['exec_extension']
+        trgt_path = Path(build_cfg['tests_dir'], tn)
+        s = (
+            f'{trgt_path}{extension} '
+        )
+        mk_io.write(s)
+    mk_io.write('\n\n')
+
 # -----------------------------------------------------------------------------
 # таргеты объектников
 
-# TODO:
-# if all_c_obj
-language = 'cpp'
-
-compiler = compiler_param[settings['platform']][language]['cmp']
-std = compiler_param[settings['platform']][language]['std']
-
 for tn in all_obj:
-    dep_file_path = str(build_join(tn)) + '.d'
-    trgt_path = build_join(tn)
+
+    if tn in all_obj_src:
+        platform = project_platform
+        trgt_path = build_join(tn)
+        dep_file_path = str(build_join(tn)) + '.d'
+    elif tn in all_obj_tests:
+        platform = tests_platform
+        trgt_path = build_join_tests(tn)
+        dep_file_path = str(build_join_tests(tn)) + '.d'
+
+    if platform == 'tricore':
+        tricore_specific_options = True
+    else:
+        tricore_specific_options = False
+
+    if tn in all_cpp_obj:
+        language = 'cpp'
+    elif tn in all_c_obj:
+        language = 'c'
+
+    compiler = compiler_param[platform]['lang'][language]['cmp']
+    std = compiler_param[platform]['lang'][language]['std']
+
     src = build_cfg['obj'][tn]
-    cmp = compiler_from_fn(src)
     opt = incopt_file
     mk = mk_file
     s = (
         f'\n'
         f'{trgt_path}.o: {src} {dep_file_path} {opt} {mk_file}\n'
-        f'\t{compiler} -mcpu={core} '
+        f'\t{compiler} '
         f'-MT {trgt_path}.o -MMD -MP -MF {trgt_path}.Td @{opt} '
         f'-c -o {trgt_path}.o -g '
-        f'-ffunction-sections -msmall-data=65535 -msmall-const=65535 '
+        f'-ffunction-sections '
         f'-O0 -fno-common --std={std} '
-        f'-Wall -W -Werror -Isrc/h {src}\n'
-        f'\t@mv -f {trgt_path}.Td {trgt_path}.d && touch {trgt_path}.o\n'
+        f'-Wall -W -Werror -Isrc/h {src} '
     )
+
+    mk_io.write(s)
+
+    if tricore_specific_options:
+        s = (
+            f'-msmall-data=65535 -msmall-const=65535 '
+            f'-mcpu={core} '
+        )
+        mk_io.write(s)
+
+    # переименовать файл зависимостей
+    s = f'\n\t@mv -f {trgt_path}.Td {trgt_path}.d && touch {trgt_path}.o\n'
+    mk_io.write(s)
+
+# -----------------------------------------------------------------------------
+# таргеты тестовых исполнимых файлов
+
+for tn in all_obj_tests:
+
+    platform = tests_platform
+
+    if tn in all_cpp_obj:
+        language = 'cpp'
+    elif tn in all_c_obj:
+        language = 'c'
+
+    compiler = compiler_param[platform]['lang'][language]['cmp']
+
+    extension = compiler_param[tests_platform]['exec_extension']
+    trgt_path = Path(build_cfg['tests_dir'], tn)
+    src = add_obj_extension(str(trgt_path))
+    mk = mk_file
+    s = (
+        f'\n'
+        f'{trgt_path}{extension}: {src} {mk_file}\n'
+        f'\t{compiler} '
+        f'-o {trgt_path}{extension} {src}\n'
+    )
+
     mk_io.write(s)
 
 # -----------------------------------------------------------------------------
@@ -312,17 +455,33 @@ s = (
     f'\trm -rf {build_dir_slash}*.d'
 )
 mk_io.write(s)
-# -----------------------------------------------------------------------------
 
 update_file(mk_file, mk_io.getvalue())
+# -----------------------------------------------------------------------------
 
-subprocess.run(f'make -f {mk_file} all', check=True)
+# побилдить проект
+if build_project:
+    subprocess.run(f'make -f {mk_file} all', check=True)
 
-# subprocess.run(f'tsim16p_e '
-#                f'-DConfig {path_tc161_dconfig} '
-#                f'-MConfig {path_tc161_mconfig} '
-#                f'-h -s -H -disable-watchdog -o HelloTSim.elf '
-#                f'-log-file tsim.log', check=True)
+# побилдить тесты
+if build_tests:
+    subprocess.run(f'make -f {mk_file} all_tests', check=True)
+
+# запустить тесты
+if run_tests:
+    for x in all_obj_tests:
+        strnew = Path(build_cfg['tests_dir'], x).with_suffix(extension)
+        subprocess.run(str(strnew))
+
+# запустить симуляцию
+log_file_path = build_join('tsim.log')
+
+if run_sim:
+    subprocess.run(f'tsim16p_e '
+                   f'-DConfig {path_tc161_dconfig} '
+                   f'-MConfig {path_tc161_mconfig} '
+                   f'-h -s -H -disable-watchdog -o HelloTSim.elf '
+                   f'-log-file {log_file_path}', check=True)
 
 if __name__ == '__main__':
     pass
