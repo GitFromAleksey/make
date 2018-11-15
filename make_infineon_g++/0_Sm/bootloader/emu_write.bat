@@ -1,0 +1,1 @@
+py ..\..\1_ToolEnv\emu_prog\emu_write_hex.py output/%1
