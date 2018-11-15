@@ -1,2 +1,3 @@
+"-iquote../tests"
 "-iquote../src"
 "-iquote../src/illd_config"
