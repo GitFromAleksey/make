@@ -1,10 +1,11 @@
 .PHONY: sim
 
-SIM_FILE_NAME=C:\WorkSpace\ProjectLifeCycleAutomation\2_Out\Tricore_Gnuc\prog_tc.elf
+#SIM_FILE_NAME=C:\WorkSpace\ProjectLifeCycleAutomation\2_Out\Tricore_Gnuc\prog_tc.elf
 #SIM_FILE_NAME=out\artifacts\HelloTSim.elf
+SIM_FILE_NAME=tsim.elf
 
 # -x 0 - forever
-SIM_TIME_CYCLES = -x 5179
+SIM_TIME_CYCLES = -x 200000
 #5178
 #SIM_TIME_CYCLES = -x 0
 

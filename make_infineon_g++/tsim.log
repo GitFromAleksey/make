@@ -9,12 +9,12 @@ VERSION: TC_MODELS_1.17.11
          Setting simulator to TC16P B-STEP mode
 
 Reading MConfig file for memory configuration: .\tsim\tc161\MConfig
-Code cache: enabled:1 lines:128   ways:2   line size:32 access time:0 lru:LRU
-DRB cache: enabled:1 lines:1   ways:4   line size:32 access time:0 lru:LRU
 SCRATCH 0   SCRATCH: FROM 0xc0000000 UNTIL 0xc0005fff  0T wait
-PARTITION 1   PSPR1: FROM 0x60100000 UNTIL 0x60107fff  0T wait
-PARTITION 2   PSPR2: FROM 0x50100000 UNTIL 0x50107fff  0T wait
-SCRATCH 3   SCRATCH: FROM 0xd0000000 UNTIL 0xd001bfff  0T wait
+SCRATCH 1   SCRATCH: FROM 0xd0000000 UNTIL 0xd001bfff  0T wait
+Code cache: enabled:0 lines:128   ways:2   line size:32 access time:0 lru:LRU
+DRB cache: enabled:0 lines:1   ways:4   line size:32 access time:0 lru:LRU
+PARTITION 2   PSPR1: FROM 0x60100000 UNTIL 0x60107fff  0T wait
+PARTITION 3   PSPR2: FROM 0x50100000 UNTIL 0x50107fff  0T wait
 PARTITION 4   DSPR1: FROM 0x60000000 UNTIL 0x6001dfff  0T wait
 PARTITION 5   DSPR2: FROM 0x50000000 UNTIL 0x5001dfff  0T wait
 PARTITION 6   PFLASH0: FROM 0xa0000000 UNTIL 0xa01fffff  0T wait
@@ -54,22 +54,20 @@ Number of code protection ranges:   8
 Number of data protection ranges:   16
 
 All Files setup for simulation run
-Downloading program to Simulator: C:\WorkSpace\ProjectLifeCycleAutomation\2_Out\Tricore_Gnuc\prog_tc.elf
+Downloading program to Simulator: tsim.elf
 Start Simulation
-Maximum runtime (cycles)              =                5179
+Maximum runtime (cycles)              =              200000
 Simulation complete
 
 **************** Simulation statistics ****************
 
-Total number of instructions executed =                5179
-Total number of cycles run            =                3968
-Total number of seconds for execution =                0.00 seconds
-Instruction delay count               =                3928
-total number of interrupts fired      = 1
+Total number of instructions executed =              197202
+Total number of cycles run            =              200000
+Total number of seconds for execution =                1.00 seconds
+Instruction delay count               =              199351
+total number of interrupts fired      = 0
 No Dcache accesses
-Ccache Hit Rate: 99.81%
-Total Ccache accesses:   5180 Ccache hits: 5170
-
+No Ccache accesses
 
 Complete Instruction Histogram:
    %     | Number of occurrences   | Primary    | Secondary  | Mnemonic
@@ -87,23 +85,23 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x7d | ABSS.H
   0.00 % |                       0 | op1 = 0x12 | op2 = 0x00 | ADD
   0.00 % |                       0 | op1 = 0x1a | op2 = 0x00 | ADD
-  0.04 % |                       2 | op1 = 0x42 | op2 = 0x00 | ADD
+  0.01 % |                      24 | op1 = 0x42 | op2 = 0x00 | ADD
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x00 | ADD
   0.00 % |                       0 | op1 = 0x92 | op2 = 0x00 | ADD
   0.00 % |                       0 | op1 = 0x9a | op2 = 0x00 | ADD
-  0.00 % |                       0 | op1 = 0x0b | op2 = 0x00 | ADD
-  0.00 % |                       0 | op1 = 0xc2 | op2 = 0x00 | ADD
+  0.00 % |                       5 | op1 = 0x0b | op2 = 0x00 | ADD
+ 16.29 % |                   32116 | op1 = 0xc2 | op2 = 0x00 | ADD
   0.00 % |                       0 | op1 = 0x01 | op2 = 0x01 | ADD.A
-  0.00 % |                       0 | op1 = 0x30 | op2 = 0x00 | ADD.A
- 24.72 % |                    1280 | op1 = 0xb0 | op2 = 0x00 | ADD.A
+  0.00 % |                       1 | op1 = 0x30 | op2 = 0x00 | ADD.A
+  0.05 % |                     102 | op1 = 0xb0 | op2 = 0x00 | ADD.A
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x40 | ADD.B
   0.00 % |                       0 | op1 = 0x6b | op2 = 0x02 | ADD.F
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x60 | ADD.H
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x05 | ADDC
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x05 | ADDC
-  0.12 % |                       6 | op1 = 0x1b | op2 = 0x00 | ADDI
+  0.02 % |                      31 | op1 = 0x1b | op2 = 0x00 | ADDI
   0.00 % |                       0 | op1 = 0x9b | op2 = 0x00 | ADDIH
-  0.02 % |                       1 | op1 = 0x11 | op2 = 0x00 | ADDIH.A
+  0.00 % |                       0 | op1 = 0x11 | op2 = 0x00 | ADDIH.A
   0.00 % |                       0 | op1 = 0x22 | op2 = 0x00 | ADDS
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x02 | ADDS
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x02 | ADDS
@@ -111,14 +109,14 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x63 | ADDS.HU
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x03 | ADDS.U
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x03 | ADDS.U
- 24.72 % |                    1280 | op1 = 0x01 | op2 = 0x60 | ADDSC.A
-  0.00 % |                       0 | op1 = 0x10 | op2 = 0x00 | ADDSC.A
+  0.05 % |                      93 | op1 = 0x01 | op2 = 0x60 | ADDSC.A
+  0.00 % |                       1 | op1 = 0x10 | op2 = 0x00 | ADDSC.A
   0.00 % |                       0 | op1 = 0x01 | op2 = 0x62 | ADDSC.AT
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x04 | ADDX
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x04 | ADDX
-  0.02 % |                       1 | op1 = 0x16 | op2 = 0x00 | AND
-  0.00 % |                       0 | op1 = 0x26 | op2 = 0x00 | AND
-  0.00 % |                       0 | op1 = 0x8f | op2 = 0x08 | AND
+  0.00 % |                       4 | op1 = 0x16 | op2 = 0x00 | AND
+  0.00 % |                       3 | op1 = 0x26 | op2 = 0x00 | AND
+  0.01 % |                      19 | op1 = 0x8f | op2 = 0x08 | AND
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x08 | AND
   0.00 % |                       0 | op1 = 0x47 | op2 = 0x00 | AND.AND.T
   0.00 % |                       0 | op1 = 0x47 | op2 = 0x03 | AND.ANDN.T
@@ -129,15 +127,15 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x25 | AND.GE.U
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x25 | AND.GE.U
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x22 | AND.LT
-  0.00 % |                       0 | op1 = 0x0b | op2 = 0x22 | AND.LT
+  0.00 % |                       5 | op1 = 0x0b | op2 = 0x22 | AND.LT
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x23 | AND.LT.U
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x23 | AND.LT.U
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x21 | AND.NE
-  0.00 % |                       0 | op1 = 0x0b | op2 = 0x21 | AND.NE
+  0.00 % |                       1 | op1 = 0x0b | op2 = 0x21 | AND.NE
   0.00 % |                       0 | op1 = 0x47 | op2 = 0x02 | AND.NOR.T
   0.00 % |                       0 | op1 = 0x47 | op2 = 0x01 | AND.OR.T
   0.00 % |                       0 | op1 = 0x87 | op2 = 0x00 | AND.T
-  0.04 % |                       2 | op1 = 0x8f | op2 = 0x0e | ANDN
+  0.01 % |                      26 | op1 = 0x8f | op2 = 0x0e | ANDN
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x0e | ANDN
   0.00 % |                       0 | op1 = 0x87 | op2 = 0x03 | ANDN.T
   0.00 % |                       0 | op1 = 0xad | op2 = 0x00 | BISR
@@ -175,9 +173,9 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0xab | op2 = 0x01 | CADDN
   0.00 % |                       0 | op1 = 0xca | op2 = 0x00 | CADDN
   0.00 % |                       0 | op1 = 0x5c | op2 = 0x00 | CALL
-  0.00 % |                       0 | op1 = 0x6d | op2 = 0x00 | CALL
+  0.02 % |                      48 | op1 = 0x6d | op2 = 0x00 | CALL
   0.00 % |                       0 | op1 = 0xed | op2 = 0x00 | CALLA
-  0.00 % |                       0 | op1 = 0x2d | op2 = 0x00 | CALLI
+  0.00 % |                       3 | op1 = 0x2d | op2 = 0x00 | CALLI
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x1c | CLO
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x7d | CLO.H
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x1d | CLS
@@ -197,16 +195,16 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x4b | op2 = 0x03 | CRC32B.W
   0.00 % |                       0 | op1 = 0x2b | op2 = 0x02 | CSUB
   0.00 % |                       0 | op1 = 0x2b | op2 = 0x03 | CSUBN
-  0.00 % |                       0 | op1 = 0x00 | op2 = 0x0a | DEBUG
+  0.00 % |                       3 | op1 = 0x00 | op2 = 0x0a | DEBUG
   0.00 % |                       0 | op1 = 0x0d | op2 = 0x04 | DEBUG
   0.00 % |                       0 | op1 = 0x17 | op2 = 0x04 | DEXTR
   0.00 % |                       0 | op1 = 0x77 | op2 = 0x00 | DEXTR
   0.00 % |                       0 | op1 = 0x0d | op2 = 0x0d | DISABLE
   0.00 % |                       0 | op1 = 0x0d | op2 = 0x0f | DISABLE
-  0.00 % |                       0 | op1 = 0x4b | op2 = 0x20 | DIV
+  0.00 % |                       1 | op1 = 0x4b | op2 = 0x20 | DIV
   0.00 % |                       0 | op1 = 0x4b | op2 = 0x05 | DIV.F
   0.00 % |                       0 | op1 = 0x4b | op2 = 0x21 | DIV.U
-  0.02 % |                       1 | op1 = 0x0d | op2 = 0x12 | DSYNC
+  0.00 % |                       8 | op1 = 0x0d | op2 = 0x12 | DSYNC
   0.00 % |                       0 | op1 = 0x6b | op2 = 0x0d | DVADJ
   0.00 % |                       0 | op1 = 0x4b | op2 = 0x1a | DVINIT
   0.00 % |                       0 | op1 = 0x4b | op2 = 0x5a | DVINIT.B
@@ -219,7 +217,7 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x0d | op2 = 0x0c | ENABLE
   0.00 % |                       0 | op1 = 0x3a | op2 = 0x00 | EQ
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x10 | EQ
-  0.00 % |                       0 | op1 = 0x0b | op2 = 0x10 | EQ
+  0.00 % |                       1 | op1 = 0x0b | op2 = 0x10 | EQ
   0.00 % |                       0 | op1 = 0xba | op2 = 0x00 | EQ
   0.00 % |                       0 | op1 = 0x01 | op2 = 0x40 | EQ.A
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x50 | EQ.B
@@ -234,7 +232,7 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x37 | op2 = 0x02 | EXTR
   0.00 % |                       0 | op1 = 0x57 | op2 = 0x02 | EXTR
   0.00 % |                       0 | op1 = 0x17 | op2 = 0x03 | EXTR.U
-  0.04 % |                       2 | op1 = 0x37 | op2 = 0x03 | EXTR.U
+  0.13 % |                     259 | op1 = 0x37 | op2 = 0x03 | EXTR.U
   0.00 % |                       0 | op1 = 0x57 | op2 = 0x03 | EXTR.U
   0.00 % |                       0 | op1 = 0x61 | op2 = 0x00 | FCALL
   0.00 % |                       0 | op1 = 0xe1 | op2 = 0x00 | FCALLA
@@ -250,7 +248,7 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x14 | GE
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x14 | GE
   0.00 % |                       0 | op1 = 0x01 | op2 = 0x43 | GE.A
-  0.00 % |                       0 | op1 = 0x8b | op2 = 0x15 | GE.U
+  0.00 % |                       1 | op1 = 0x8b | op2 = 0x15 | GE.U
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x15 | GE.U
   0.00 % |                       0 | op1 = 0x37 | op2 = 0x01 | IMASK
   0.00 % |                       0 | op1 = 0x57 | op2 = 0x01 | IMASK
@@ -261,81 +259,81 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x37 | op2 = 0x00 | INSERT
   0.00 % |                       0 | op1 = 0x57 | op2 = 0x00 | INSERT
   0.00 % |                       0 | op1 = 0x97 | op2 = 0x00 | INSERT
-  0.04 % |                       2 | op1 = 0xb7 | op2 = 0x00 | INSERT
+  0.01 % |                      11 | op1 = 0xb7 | op2 = 0x00 | INSERT
   0.00 % |                       0 | op1 = 0xd7 | op2 = 0x00 | INSERT
   0.00 % |                       0 | op1 = 0x67 | op2 = 0x01 | INSN.T
-  0.00 % |                       0 | op1 = 0x0d | op2 = 0x13 | ISYNC
+  0.00 % |                       7 | op1 = 0x0d | op2 = 0x13 | ISYNC
   0.00 % |                       0 | op1 = 0x4b | op2 = 0x14 | ITOF
   0.00 % |                       0 | op1 = 0x6b | op2 = 0x0a | IXMAX
   0.00 % |                       0 | op1 = 0x6b | op2 = 0x0b | IXMAX.U
   0.00 % |                       0 | op1 = 0x6b | op2 = 0x08 | IXMIN
   0.00 % |                       0 | op1 = 0x6b | op2 = 0x09 | IXMIN.U
-  0.00 % |                       0 | op1 = 0x1d | op2 = 0x00 | J
-  0.00 % |                       0 | op1 = 0x3c | op2 = 0x00 | J
+  0.01 % |                      12 | op1 = 0x1d | op2 = 0x00 | J
+  0.08 % |                     165 | op1 = 0x3c | op2 = 0x00 | J
   0.00 % |                       0 | op1 = 0x9d | op2 = 0x00 | JA
   0.00 % |                       0 | op1 = 0x1e | op2 = 0x00 | JEQ
-  0.00 % |                       0 | op1 = 0x3e | op2 = 0x00 | JEQ
+  0.02 % |                      40 | op1 = 0x3e | op2 = 0x00 | JEQ
   0.00 % |                       0 | op1 = 0x5f | op2 = 0x00 | JEQ
   0.00 % |                       0 | op1 = 0x9e | op2 = 0x00 | JEQ
   0.00 % |                       0 | op1 = 0xbe | op2 = 0x00 | JEQ
-  0.00 % |                       0 | op1 = 0xdf | op2 = 0x00 | JEQ
-  0.00 % |                       0 | op1 = 0x7d | op2 = 0x00 | JEQ.A
+  0.02 % |                      48 | op1 = 0xdf | op2 = 0x00 | JEQ
+  0.00 % |                       2 | op1 = 0x7d | op2 = 0x00 | JEQ.A
   0.00 % |                       0 | op1 = 0x7f | op2 = 0x00 | JGE
-  0.00 % |                       0 | op1 = 0xff | op2 = 0x00 | JGE
-  0.04 % |                       2 | op1 = 0x7f | op2 = 0x01 | JGE.U
+  0.00 % |                       6 | op1 = 0xff | op2 = 0x00 | JGE
+  0.01 % |                      16 | op1 = 0x7f | op2 = 0x01 | JGE.U
   0.00 % |                       0 | op1 = 0xff | op2 = 0x01 | JGE.U
-  0.00 % |                       0 | op1 = 0xce | op2 = 0x00 | JGEZ
+  0.00 % |                       1 | op1 = 0xce | op2 = 0x00 | JGEZ
   0.00 % |                       0 | op1 = 0x4e | op2 = 0x00 | JGTZ
   0.00 % |                       0 | op1 = 0x2d | op2 = 0x03 | JI
-  0.02 % |                       1 | op1 = 0xdc | op2 = 0x00 | JI
-  0.00 % |                       0 | op1 = 0x5d | op2 = 0x00 | JL
+  0.01 % |                      12 | op1 = 0xdc | op2 = 0x00 | JI
+  0.01 % |                      11 | op1 = 0x5d | op2 = 0x00 | JL
   0.00 % |                       0 | op1 = 0xdd | op2 = 0x00 | JLA
   0.00 % |                       0 | op1 = 0x8e | op2 = 0x00 | JLEZ
   0.00 % |                       0 | op1 = 0x2d | op2 = 0x02 | JLI
-  0.00 % |                       0 | op1 = 0x3f | op2 = 0x00 | JLT
-  0.00 % |                       0 | op1 = 0xbf | op2 = 0x00 | JLT
-  0.00 % |                       0 | op1 = 0x3f | op2 = 0x01 | JLT.U
-  0.00 % |                       0 | op1 = 0xbf | op2 = 0x01 | JLT.U
+ 16.27 % |                   32078 | op1 = 0x3f | op2 = 0x00 | JLT
+  0.00 % |                       4 | op1 = 0xbf | op2 = 0x00 | JLT
+  0.00 % |                       1 | op1 = 0x3f | op2 = 0x01 | JLT.U
+  0.00 % |                       2 | op1 = 0xbf | op2 = 0x01 | JLT.U
   0.00 % |                       0 | op1 = 0x0e | op2 = 0x00 | JLTZ
-  0.00 % |                       0 | op1 = 0x5e | op2 = 0x00 | JNE
-  0.00 % |                       0 | op1 = 0x5f | op2 = 0x01 | JNE
+  0.00 % |                       3 | op1 = 0x5e | op2 = 0x00 | JNE
+  0.00 % |                       2 | op1 = 0x5f | op2 = 0x01 | JNE
   0.00 % |                       0 | op1 = 0x7e | op2 = 0x00 | JNE
   0.00 % |                       0 | op1 = 0xde | op2 = 0x00 | JNE
-  0.00 % |                       0 | op1 = 0xdf | op2 = 0x01 | JNE
+  0.01 % |                      15 | op1 = 0xdf | op2 = 0x01 | JNE
   0.00 % |                       0 | op1 = 0xfe | op2 = 0x00 | JNE
   0.00 % |                       0 | op1 = 0x7d | op2 = 0x01 | JNE.A
   0.00 % |                       0 | op1 = 0x1f | op2 = 0x01 | JNED
-  0.00 % |                       0 | op1 = 0x9f | op2 = 0x01 | JNED
+  0.03 % |                      68 | op1 = 0x9f | op2 = 0x01 | JNED
   0.00 % |                       0 | op1 = 0x1f | op2 = 0x00 | JNEI
   0.00 % |                       0 | op1 = 0x9f | op2 = 0x00 | JNEI
-  0.00 % |                       0 | op1 = 0xee | op2 = 0x00 | JNZ
-  0.00 % |                       0 | op1 = 0xf6 | op2 = 0x00 | JNZ
-  0.00 % |                       0 | op1 = 0x7c | op2 = 0x00 | JNZ.A
+  0.01 % |                      15 | op1 = 0xee | op2 = 0x00 | JNZ
+  0.00 % |                       3 | op1 = 0xf6 | op2 = 0x00 | JNZ
+  0.00 % |                       1 | op1 = 0x7c | op2 = 0x00 | JNZ.A
   0.00 % |                       0 | op1 = 0xbd | op2 = 0x01 | JNZ.A
-  0.00 % |                       0 | op1 = 0x6f | op2 = 0x01 | JNZ.T
-  0.00 % |                       0 | op1 = 0xae | op2 = 0x00 | JNZ.T
-  0.00 % |                       0 | op1 = 0x6e | op2 = 0x00 | JZ
-  0.00 % |                       0 | op1 = 0x76 | op2 = 0x00 | JZ
-  0.00 % |                       0 | op1 = 0xbc | op2 = 0x00 | JZ.A
-  0.00 % |                       0 | op1 = 0xbd | op2 = 0x00 | JZ.A
-  0.00 % |                       0 | op1 = 0x2e | op2 = 0x00 | JZ.T
-  0.02 % |                       1 | op1 = 0x6f | op2 = 0x00 | JZ.T
+  0.00 % |                       4 | op1 = 0x6f | op2 = 0x01 | JNZ.T
+  0.00 % |                       2 | op1 = 0xae | op2 = 0x00 | JNZ.T
+  0.00 % |                       6 | op1 = 0x6e | op2 = 0x00 | JZ
+  0.03 % |                      60 | op1 = 0x76 | op2 = 0x00 | JZ
+  0.00 % |                       4 | op1 = 0xbc | op2 = 0x00 | JZ.A
+  0.00 % |                       8 | op1 = 0xbd | op2 = 0x00 | JZ.A
+  0.00 % |                       9 | op1 = 0x2e | op2 = 0x00 | JZ.T
+  0.00 % |                       4 | op1 = 0x6f | op2 = 0x00 | JZ.T
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x16 | LD.A
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x06 | LD.A
   0.00 % |                       0 | op1 = 0x85 | op2 = 0x02 | LD.A
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x16 | LD.A
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x26 | LD.A
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x06 | LD.A
-  0.00 % |                       0 | op1 = 0x99 | op2 = 0x00 | LD.A
-  0.00 % |                       0 | op1 = 0xc4 | op2 = 0x00 | LD.A
-  0.00 % |                       0 | op1 = 0xc8 | op2 = 0x00 | LD.A
-  0.00 % |                       0 | op1 = 0xcc | op2 = 0x00 | LD.A
-  0.00 % |                       0 | op1 = 0xd4 | op2 = 0x00 | LD.A
+  0.00 % |                       8 | op1 = 0x99 | op2 = 0x00 | LD.A
+  0.01 % |                      19 | op1 = 0xc4 | op2 = 0x00 | LD.A
+  0.01 % |                      21 | op1 = 0xc8 | op2 = 0x00 | LD.A
+  0.00 % |                       3 | op1 = 0xcc | op2 = 0x00 | LD.A
+  0.00 % |                       2 | op1 = 0xd4 | op2 = 0x00 | LD.A
   0.00 % |                       0 | op1 = 0xd8 | op2 = 0x00 | LD.A
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x00 | LD.B
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x10 | LD.B
   0.00 % |                       0 | op1 = 0x05 | op2 = 0x00 | LD.B
-  0.00 % |                       0 | op1 = 0x79 | op2 = 0x00 | LD.B
+  0.04 % |                      78 | op1 = 0x79 | op2 = 0x00 | LD.B
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x00 | LD.B
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x10 | LD.B
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x20 | LD.B
@@ -349,13 +347,13 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x01 | LD.BU
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x11 | LD.BU
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x21 | LD.BU
-  0.00 % |                       0 | op1 = 0x0c | op2 = 0x00 | LD.BU
+  0.02 % |                      39 | op1 = 0x0c | op2 = 0x00 | LD.BU
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x15 | LD.D
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x05 | LD.D
   0.00 % |                       0 | op1 = 0x85 | op2 = 0x01 | LD.D
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x15 | LD.D
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x25 | LD.D
-  0.00 % |                       0 | op1 = 0x09 | op2 = 0x05 | LD.D
+  0.13 % |                     264 | op1 = 0x09 | op2 = 0x05 | LD.D
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x17 | LD.DA
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x07 | LD.DA
   0.00 % |                       0 | op1 = 0x85 | op2 = 0x03 | LD.DA
@@ -366,13 +364,13 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x02 | LD.H
   0.00 % |                       0 | op1 = 0x05 | op2 = 0x02 | LD.H
   0.00 % |                       0 | op1 = 0x84 | op2 = 0x00 | LD.H
-  0.00 % |                       0 | op1 = 0x88 | op2 = 0x00 | LD.H
-  0.00 % |                       0 | op1 = 0x8c | op2 = 0x00 | LD.H
+  0.00 % |                       5 | op1 = 0x88 | op2 = 0x00 | LD.H
+  0.01 % |                      21 | op1 = 0x8c | op2 = 0x00 | LD.H
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x12 | LD.H
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x02 | LD.H
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x22 | LD.H
   0.00 % |                       0 | op1 = 0x94 | op2 = 0x00 | LD.H
-  0.00 % |                       0 | op1 = 0xc9 | op2 = 0x00 | LD.H
+  0.00 % |                       1 | op1 = 0xc9 | op2 = 0x00 | LD.H
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x13 | LD.HU
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x03 | LD.HU
   0.00 % |                       0 | op1 = 0x05 | op2 = 0x03 | LD.HU
@@ -386,14 +384,14 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x18 | LD.Q
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x28 | LD.Q
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x08 | LD.Q
-  0.00 % |                       0 | op1 = 0x19 | op2 = 0x00 | LD.W
+ 32.54 % |                   64178 | op1 = 0x19 | op2 = 0x00 | LD.W
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x14 | LD.W
   0.00 % |                       0 | op1 = 0x29 | op2 = 0x04 | LD.W
-  0.00 % |                       0 | op1 = 0x44 | op2 = 0x00 | LD.W
-  0.02 % |                       1 | op1 = 0x48 | op2 = 0x00 | LD.W
-  0.04 % |                       2 | op1 = 0x4c | op2 = 0x00 | LD.W
-  0.02 % |                       1 | op1 = 0x54 | op2 = 0x00 | LD.W
-  0.00 % |                       0 | op1 = 0x58 | op2 = 0x00 | LD.W
+  0.01 % |                      13 | op1 = 0x44 | op2 = 0x00 | LD.W
+  0.01 % |                      14 | op1 = 0x48 | op2 = 0x00 | LD.W
+  0.02 % |                      48 | op1 = 0x4c | op2 = 0x00 | LD.W
+  0.00 % |                       6 | op1 = 0x54 | op2 = 0x00 | LD.W
+  0.00 % |                       1 | op1 = 0x58 | op2 = 0x00 | LD.W
   0.00 % |                       0 | op1 = 0x85 | op2 = 0x00 | LD.W
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x14 | LD.W
   0.00 % |                       0 | op1 = 0x09 | op2 = 0x24 | LD.W
@@ -402,7 +400,7 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x49 | op2 = 0x24 | LDLCX
   0.00 % |                       0 | op1 = 0x49 | op2 = 0x01 | LDMST
   0.00 % |                       0 | op1 = 0x49 | op2 = 0x11 | LDMST
-  0.00 % |                       0 | op1 = 0x49 | op2 = 0x21 | LDMST
+  0.00 % |                       2 | op1 = 0x49 | op2 = 0x21 | LDMST
   0.00 % |                       0 | op1 = 0x69 | op2 = 0x01 | LDMST
   0.00 % |                       0 | op1 = 0x69 | op2 = 0x11 | LDMST
   0.00 % |                       0 | op1 = 0xe5 | op2 = 0x01 | LDMST
@@ -410,12 +408,12 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x49 | op2 = 0x25 | LDUCX
   0.00 % |                       0 | op1 = 0x49 | op2 = 0x28 | LEA
   0.00 % |                       0 | op1 = 0xc5 | op2 = 0x00 | LEA
-  0.06 % |                       3 | op1 = 0xd9 | op2 = 0x00 | LEA
- 24.72 % |                    1280 | op1 = 0xfc | op2 = 0x00 | LOOP
-  0.00 % |                       0 | op1 = 0xfd | op2 = 0x00 | LOOP
+  0.15 % |                     292 | op1 = 0xd9 | op2 = 0x00 | LEA
+  0.27 % |                     529 | op1 = 0xfc | op2 = 0x00 | LOOP
+  0.02 % |                      44 | op1 = 0xfd | op2 = 0x00 | LOOP
   0.00 % |                       0 | op1 = 0xfd | op2 = 0x01 | LOOPU
   0.00 % |                       0 | op1 = 0x7a | op2 = 0x00 | LT
-  0.00 % |                       0 | op1 = 0x8b | op2 = 0x12 | LT
+  0.00 % |                       2 | op1 = 0x8b | op2 = 0x12 | LT
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x12 | LT
   0.00 % |                       0 | op1 = 0xfa | op2 = 0x00 | LT
   0.00 % |                       0 | op1 = 0x01 | op2 = 0x42 | LT.A
@@ -423,8 +421,8 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x53 | LT.BU
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x72 | LT.H
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x73 | LT.HU
-  0.00 % |                       0 | op1 = 0x8b | op2 = 0x13 | LT.U
-  0.00 % |                       0 | op1 = 0x0b | op2 = 0x13 | LT.U
+  0.00 % |                       2 | op1 = 0x8b | op2 = 0x13 | LT.U
+  0.00 % |                       7 | op1 = 0x0b | op2 = 0x13 | LT.U
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x92 | LT.W
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x93 | LT.WU
   0.00 % |                       0 | op1 = 0x13 | op2 = 0x01 | MADD
@@ -524,7 +522,7 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x7b | MAX.HU
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x1b | MAX.U
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x1b | MAX.U
-  0.04 % |                       2 | op1 = 0x4d | op2 = 0x00 | MFCR
+  0.00 % |                       6 | op1 = 0x4d | op2 = 0x00 | MFCR
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x18 | MIN
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x18 | MIN
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x58 | MIN.B
@@ -532,10 +530,10 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x78 | MIN.H
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x79 | MIN.HU
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x19 | MIN.U
-  0.00 % |                       0 | op1 = 0x0b | op2 = 0x19 | MIN.U
-  0.00 % |                       0 | op1 = 0x02 | op2 = 0x00 | MOV
-  0.02 % |                       1 | op1 = 0x3b | op2 = 0x00 | MOV
-  0.02 % |                       1 | op1 = 0x82 | op2 = 0x00 | MOV
+  0.00 % |                       5 | op1 = 0x0b | op2 = 0x19 | MIN.U
+  0.02 % |                      30 | op1 = 0x02 | op2 = 0x00 | MOV
+  0.01 % |                      21 | op1 = 0x3b | op2 = 0x00 | MOV
+  0.03 % |                      66 | op1 = 0x82 | op2 = 0x00 | MOV
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x1f | MOV
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x80 | MOV
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x81 | MOV
@@ -543,15 +541,15 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0xda | op2 = 0x00 | MOV
   0.00 % |                       0 | op1 = 0xfb | op2 = 0x00 | MOV
   0.00 % |                       0 | op1 = 0x01 | op2 = 0x63 | MOV.A
-  0.08 % |                       4 | op1 = 0x60 | op2 = 0x00 | MOV.A
-  0.04 % |                       2 | op1 = 0xa0 | op2 = 0x00 | MOV.A
+  0.04 % |                      79 | op1 = 0x60 | op2 = 0x00 | MOV.A
+  0.00 % |                       8 | op1 = 0xa0 | op2 = 0x00 | MOV.A
   0.00 % |                       0 | op1 = 0x01 | op2 = 0x00 | MOV.AA
-  0.00 % |                       0 | op1 = 0x40 | op2 = 0x00 | MOV.AA
+  0.18 % |                     348 | op1 = 0x40 | op2 = 0x00 | MOV.AA
   0.00 % |                       0 | op1 = 0x01 | op2 = 0x4c | MOV.D
-  0.00 % |                       0 | op1 = 0x80 | op2 = 0x00 | MOV.D
-  0.00 % |                       0 | op1 = 0xbb | op2 = 0x00 | MOV.U
-  0.12 % |                       6 | op1 = 0x7b | op2 = 0x00 | MOVH
-  0.04 % |                       2 | op1 = 0x91 | op2 = 0x00 | MOVH.A
+  0.15 % |                     293 | op1 = 0x80 | op2 = 0x00 | MOV.D
+ 16.27 % |                   32075 | op1 = 0xbb | op2 = 0x00 | MOV.U
+  0.01 % |                      19 | op1 = 0x7b | op2 = 0x00 | MOVH
+  0.02 % |                      41 | op1 = 0x91 | op2 = 0x00 | MOVH.A
   0.00 % |                       0 | op1 = 0x23 | op2 = 0x6a | MSUB
   0.00 % |                       0 | op1 = 0x23 | op2 = 0x0a | MSUB
   0.00 % |                       0 | op1 = 0x33 | op2 = 0x01 | MSUB
@@ -641,8 +639,8 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x23 | op2 = 0xe8 | MSUBS.U
   0.00 % |                       0 | op1 = 0x33 | op2 = 0x04 | MSUBS.U
   0.00 % |                       0 | op1 = 0x33 | op2 = 0x06 | MSUBS.U
-  0.06 % |                       3 | op1 = 0xcd | op2 = 0x00 | MTCR
-  0.02 % |                       1 | op1 = 0x53 | op2 = 0x01 | MUL
+  0.00 % |                       8 | op1 = 0xcd | op2 = 0x00 | MTCR
+  0.00 % |                       0 | op1 = 0x53 | op2 = 0x01 | MUL
   0.00 % |                       0 | op1 = 0x53 | op2 = 0x03 | MUL
   0.00 % |                       0 | op1 = 0x73 | op2 = 0x6a | MUL
   0.00 % |                       0 | op1 = 0x73 | op2 = 0x0a | MUL
@@ -679,19 +677,19 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x8f | op2 = 0x09 | NAND
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x09 | NAND
   0.00 % |                       0 | op1 = 0x07 | op2 = 0x00 | NAND.T
-  0.00 % |                       0 | op1 = 0x8b | op2 = 0x11 | NE
+  0.00 % |                       1 | op1 = 0x8b | op2 = 0x11 | NE
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x11 | NE
-  0.00 % |                       0 | op1 = 0x01 | op2 = 0x41 | NE.A
+  0.00 % |                       1 | op1 = 0x01 | op2 = 0x41 | NE.A
   0.00 % |                       0 | op1 = 0x01 | op2 = 0x49 | NEZ.A
-  0.00 % |                       0 | op1 = 0x00 | op2 = 0x00 | NOP
+  0.00 % |                       1 | op1 = 0x00 | op2 = 0x00 | NOP
   0.00 % |                       0 | op1 = 0x0d | op2 = 0x00 | NOP
-  0.04 % |                       2 | op1 = 0x8f | op2 = 0x0b | NOR
+  0.00 % |                       0 | op1 = 0x8f | op2 = 0x0b | NOR
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x0b | NOR
   0.00 % |                       0 | op1 = 0x87 | op2 = 0x02 | NOR.T
   0.00 % |                       0 | op1 = 0x46 | op2 = 0x00 | NOT
-  0.00 % |                       0 | op1 = 0x8f | op2 = 0x0a | OR
-  0.00 % |                       0 | op1 = 0x96 | op2 = 0x00 | OR
-  0.02 % |                       1 | op1 = 0xa6 | op2 = 0x00 | OR
+  0.01 % |                      20 | op1 = 0x8f | op2 = 0x0a | OR
+  0.01 % |                      10 | op1 = 0x96 | op2 = 0x00 | OR
+  0.13 % |                     257 | op1 = 0xa6 | op2 = 0x00 | OR
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x0a | OR
   0.00 % |                       0 | op1 = 0xc7 | op2 = 0x00 | OR.AND.T
   0.00 % |                       0 | op1 = 0xc7 | op2 = 0x03 | OR.ANDN.T
@@ -701,10 +699,10 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x2b | OR.GE
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x2c | OR.GE.U
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x2c | OR.GE.U
-  0.00 % |                       0 | op1 = 0x8b | op2 = 0x29 | OR.LT
+  0.00 % |                       1 | op1 = 0x8b | op2 = 0x29 | OR.LT
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x29 | OR.LT
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x2a | OR.LT.U
-  0.00 % |                       0 | op1 = 0x0b | op2 = 0x2a | OR.LT.U
+  0.00 % |                       2 | op1 = 0x0b | op2 = 0x2a | OR.LT.U
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x28 | OR.NE
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x28 | OR.NE
   0.00 % |                       0 | op1 = 0xc7 | op2 = 0x02 | OR.NOR.T
@@ -718,14 +716,14 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x4b | op2 = 0x15 | Q31TOF
   0.00 % |                       0 | op1 = 0x4b | op2 = 0x19 | QSEED.F
   0.00 % |                       0 | op1 = 0x0d | op2 = 0x0e | RESTORE
-  0.00 % |                       0 | op1 = 0x00 | op2 = 0x09 | RET
+  0.03 % |                      50 | op1 = 0x00 | op2 = 0x09 | RET
   0.00 % |                       0 | op1 = 0x0d | op2 = 0x06 | RET
   0.00 % |                       0 | op1 = 0x00 | op2 = 0x08 | RFE
   0.00 % |                       0 | op1 = 0x0d | op2 = 0x07 | RFE
   0.00 % |                       0 | op1 = 0x0d | op2 = 0x05 | RFM
   0.00 % |                       0 | op1 = 0x0d | op2 = 0x09 | RSLCX
   0.00 % |                       0 | op1 = 0x2f | op2 = 0x00 | RSTV
-  0.00 % |                       0 | op1 = 0x32 | op2 = 0x05 | RSUB
+  0.00 % |                       1 | op1 = 0x32 | op2 = 0x05 | RSUB
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x08 | RSUB
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x0a | RSUBS
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x0b | RSUBS.U
@@ -737,13 +735,13 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x7e | SAT.H
   0.00 % |                       0 | op1 = 0x32 | op2 = 0x03 | SAT.HU
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x7f | SAT.HU
-  0.00 % |                       0 | op1 = 0x2b | op2 = 0x04 | SEL
-  0.00 % |                       0 | op1 = 0xab | op2 = 0x04 | SEL
+  0.00 % |                       1 | op1 = 0x2b | op2 = 0x04 | SEL
+  0.00 % |                       2 | op1 = 0xab | op2 = 0x04 | SEL
   0.00 % |                       0 | op1 = 0x2b | op2 = 0x05 | SELN
-  0.00 % |                       0 | op1 = 0xab | op2 = 0x05 | SELN
-  0.06 % |                       3 | op1 = 0x06 | op2 = 0x00 | SH
-  0.00 % |                       0 | op1 = 0x8f | op2 = 0x00 | SH
-  0.00 % |                       0 | op1 = 0x0f | op2 = 0x00 | SH
+  0.00 % |                       1 | op1 = 0xab | op2 = 0x05 | SELN
+  0.00 % |                       2 | op1 = 0x06 | op2 = 0x00 | SH
+  0.01 % |                      16 | op1 = 0x8f | op2 = 0x00 | SH
+  0.00 % |                       1 | op1 = 0x0f | op2 = 0x00 | SH
   0.00 % |                       0 | op1 = 0x27 | op2 = 0x00 | SH.AND.T
   0.00 % |                       0 | op1 = 0x27 | op2 = 0x03 | SH.ANDN.T
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x37 | SH.EQ
@@ -766,8 +764,8 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0xa7 | op2 = 0x01 | SH.ORN.T
   0.00 % |                       0 | op1 = 0xa7 | op2 = 0x02 | SH.XNOR.T
   0.00 % |                       0 | op1 = 0xa7 | op2 = 0x03 | SH.XOR.T
-  0.00 % |                       0 | op1 = 0x86 | op2 = 0x00 | SHA
-  0.00 % |                       0 | op1 = 0x8f | op2 = 0x01 | SHA
+  0.00 % |                       1 | op1 = 0x86 | op2 = 0x00 | SHA
+  0.00 % |                       1 | op1 = 0x8f | op2 = 0x01 | SHA
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x01 | SHA
   0.00 % |                       0 | op1 = 0x8f | op2 = 0x41 | SHA.H
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x41 | SHA.H
@@ -779,17 +777,17 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0xa5 | op2 = 0x02 | ST.A
   0.00 % |                       0 | op1 = 0xa9 | op2 = 0x16 | ST.A
   0.00 % |                       0 | op1 = 0xa9 | op2 = 0x06 | ST.A
-  0.00 % |                       0 | op1 = 0xb5 | op2 = 0x00 | ST.A
+  0.00 % |                       1 | op1 = 0xb5 | op2 = 0x00 | ST.A
   0.00 % |                       0 | op1 = 0xe4 | op2 = 0x00 | ST.A
-  0.00 % |                       0 | op1 = 0xe8 | op2 = 0x00 | ST.A
-  0.00 % |                       0 | op1 = 0xec | op2 = 0x00 | ST.A
-  0.00 % |                       0 | op1 = 0xf4 | op2 = 0x00 | ST.A
-  0.00 % |                       0 | op1 = 0xf8 | op2 = 0x00 | ST.A
+  0.00 % |                       6 | op1 = 0xe8 | op2 = 0x00 | ST.A
+  0.00 % |                       3 | op1 = 0xec | op2 = 0x00 | ST.A
+  0.00 % |                       1 | op1 = 0xf4 | op2 = 0x00 | ST.A
+  0.00 % |                       4 | op1 = 0xf8 | op2 = 0x00 | ST.A
   0.00 % |                       0 | op1 = 0x24 | op2 = 0x00 | ST.B
   0.00 % |                       0 | op1 = 0x25 | op2 = 0x00 | ST.B
-  0.00 % |                       0 | op1 = 0x28 | op2 = 0x00 | ST.B
+  0.01 % |                      25 | op1 = 0x28 | op2 = 0x00 | ST.B
   0.00 % |                       0 | op1 = 0x2c | op2 = 0x00 | ST.B
-  0.00 % |                       0 | op1 = 0x34 | op2 = 0x00 | ST.B
+  0.02 % |                      39 | op1 = 0x34 | op2 = 0x00 | ST.B
   0.00 % |                       0 | op1 = 0x89 | op2 = 0x00 | ST.B
   0.00 % |                       0 | op1 = 0x89 | op2 = 0x10 | ST.B
   0.00 % |                       0 | op1 = 0x89 | op2 = 0x20 | ST.B
@@ -798,7 +796,7 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0xe9 | op2 = 0x00 | ST.B
   0.00 % |                       0 | op1 = 0x89 | op2 = 0x15 | ST.D
   0.00 % |                       0 | op1 = 0x89 | op2 = 0x25 | ST.D
-  0.00 % |                       0 | op1 = 0x89 | op2 = 0x05 | ST.D
+  0.14 % |                     274 | op1 = 0x89 | op2 = 0x05 | ST.D
   0.00 % |                       0 | op1 = 0xa5 | op2 = 0x01 | ST.D
   0.00 % |                       0 | op1 = 0xa9 | op2 = 0x15 | ST.D
   0.00 % |                       0 | op1 = 0xa9 | op2 = 0x05 | ST.D
@@ -813,7 +811,7 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x89 | op2 = 0x02 | ST.H
   0.00 % |                       0 | op1 = 0x89 | op2 = 0x22 | ST.H
   0.00 % |                       0 | op1 = 0xa4 | op2 = 0x00 | ST.H
-  0.00 % |                       0 | op1 = 0xa8 | op2 = 0x00 | ST.H
+  0.01 % |                      14 | op1 = 0xa8 | op2 = 0x00 | ST.H
   0.00 % |                       0 | op1 = 0xa9 | op2 = 0x12 | ST.H
   0.00 % |                       0 | op1 = 0xa9 | op2 = 0x02 | ST.H
   0.00 % |                       0 | op1 = 0xac | op2 = 0x00 | ST.H
@@ -826,12 +824,12 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0xa9 | op2 = 0x18 | ST.Q
   0.00 % |                       0 | op1 = 0xa9 | op2 = 0x08 | ST.Q
   0.00 % |                       0 | op1 = 0xd5 | op2 = 0x00 | ST.T
-  0.00 % |                       0 | op1 = 0x59 | op2 = 0x00 | ST.W
-  0.00 % |                       0 | op1 = 0x64 | op2 = 0x00 | ST.W
-  0.02 % |                       1 | op1 = 0x68 | op2 = 0x00 | ST.W
- 24.72 % |                    1280 | op1 = 0x6c | op2 = 0x00 | ST.W
-  0.00 % |                       0 | op1 = 0x74 | op2 = 0x00 | ST.W
-  0.00 % |                       0 | op1 = 0x78 | op2 = 0x00 | ST.W
+ 16.28 % |                   32109 | op1 = 0x59 | op2 = 0x00 | ST.W
+  0.00 % |                       2 | op1 = 0x64 | op2 = 0x00 | ST.W
+  0.03 % |                      51 | op1 = 0x68 | op2 = 0x00 | ST.W
+  0.01 % |                      16 | op1 = 0x6c | op2 = 0x00 | ST.W
+  0.14 % |                     267 | op1 = 0x74 | op2 = 0x00 | ST.W
+  0.00 % |                       6 | op1 = 0x78 | op2 = 0x00 | ST.W
   0.00 % |                       0 | op1 = 0x89 | op2 = 0x14 | ST.W
   0.00 % |                       0 | op1 = 0x89 | op2 = 0x24 | ST.W
   0.00 % |                       0 | op1 = 0x89 | op2 = 0x04 | ST.W
@@ -842,12 +840,12 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x49 | op2 = 0x26 | STLCX
   0.00 % |                       0 | op1 = 0x15 | op2 = 0x01 | STUCX
   0.00 % |                       0 | op1 = 0x49 | op2 = 0x27 | STUCX
-  0.00 % |                       0 | op1 = 0x52 | op2 = 0x00 | SUB
-  0.00 % |                       0 | op1 = 0x5a | op2 = 0x00 | SUB
-  0.00 % |                       0 | op1 = 0xa2 | op2 = 0x00 | SUB
+  0.00 % |                       2 | op1 = 0x52 | op2 = 0x00 | SUB
+  0.00 % |                       8 | op1 = 0x5a | op2 = 0x00 | SUB
+  0.01 % |                      27 | op1 = 0xa2 | op2 = 0x00 | SUB
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x08 | SUB
   0.00 % |                       0 | op1 = 0x01 | op2 = 0x02 | SUB.A
-  0.00 % |                       0 | op1 = 0x20 | op2 = 0x00 | SUB.A
+  0.00 % |                       5 | op1 = 0x20 | op2 = 0x00 | SUB.A
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x48 | SUB.B
   0.00 % |                       0 | op1 = 0x6b | op2 = 0x03 | SUB.F
   0.00 % |                       0 | op1 = 0x0b | op2 = 0x68 | SUB.H
@@ -886,7 +884,7 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x8f | op2 = 0x0d | XNOR
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x0d | XNOR
   0.00 % |                       0 | op1 = 0x07 | op2 = 0x02 | XNOR.T
-  0.04 % |                       2 | op1 = 0x8f | op2 = 0x0c | XOR
+  0.00 % |                       0 | op1 = 0x8f | op2 = 0x0c | XOR
   0.00 % |                       0 | op1 = 0xc6 | op2 = 0x00 | XOR
   0.00 % |                       0 | op1 = 0x0f | op2 = 0x0c | XOR
   0.00 % |                       0 | op1 = 0x8b | op2 = 0x2f | XOR.EQ
@@ -904,57 +902,57 @@ Complete Instruction Histogram:
   0.00 % |                       0 | op1 = 0x07 | op2 = 0x03 | XOR.T
 
 Instruction histogram:   %       (Num of instructions)
-    MAC:               0.02%     (                  1)
-    JMPS:             24.79%     (               1284)
-    LOADS:             0.14%     (                  7)
-    STORES:           24.73%     (               1281)
-    ARITHMETIC:       50.20%     (               2600)
-    SYS:               0.12%     (                  6)
-    MISC:              0.00%     (                  0)
-    FPU (total):       0.00%     (                  0)
-    FPU (arithmetic):  0.00%     (                  0)
+    MAC:               0.00%     (                  0)
+    JMPS:             16.87%     (              33276)
+    LOADS:            32.97%     (              65013)
+    STORES:           16.64%     (              32818)
+    ARITHMETIC:       33.50%     (              66059)
+    SYS:               0.02%     (                 33)
+    MISC:              0.00%     (                  2)
+    FPU (total):       0.00%     (                  1)
+    FPU (arithmetic):  0.00%     (                  1)
     FPU (MAC):         0.00%     (                  0)
 
 Data Register usage for 32 bit instructions: 
 
-    DR[00] = 0                   DR[01] = 0                  
-    DR[02] = 1296                DR[03] = 11                 
-    DR[04] = 6                   DR[05] = 6                  
-    DR[06] = 0                   DR[07] = 0                  
-    DR[08] = 4                   DR[09] = 0                  
-    DR[10] = 0                   DR[11] = 0                  
-    DR[12] = 0                   DR[13] = 0                  
-    DR[14] = 0                   DR[15] = 1303               
+    DR[00] = 338                 DR[01] = 1062               
+    DR[02] = 64373               DR[03] = 212                
+    DR[04] = 178                 DR[05] = 155                
+    DR[06] = 59                  DR[07] = 0                  
+    DR[08] = 114                 DR[09] = 105                
+    DR[10] = 96                  DR[11] = 98                 
+    DR[12] = 62                  DR[13] = 53                 
+    DR[14] = 590                 DR[15] = 161367             
 
 Address Register usage for 32 bit instructions: 
 
-    AR[00] = 0                   AR[01] = 0                  
-    AR[02] = 2565                AR[03] = 2560               
-    AR[04] = 0                   AR[05] = 0                  
-    AR[06] = 0                   AR[07] = 0                  
-    AR[08] = 0                   AR[09] = 0                  
-    AR[10] = 0                   AR[11] = 0                  
-    AR[12] = 0                   AR[13] = 0                  
-    AR[14] = 0                   AR[15] = 1291               
+    AR[00] = 11                  AR[01] = 4                  
+    AR[02] = 463                 AR[03] = 1112               
+    AR[04] = 540                 AR[05] = 292                
+    AR[06] = 9                   AR[07] = 5                  
+    AR[08] = 3                   AR[09] = 3                  
+    AR[10] = 85                  AR[11] = 124                
+    AR[12] = 101                 AR[13] = 124                
+    AR[14] = 96827               AR[15] = 980                
 
 Data Register usage for 16 bit instructions:
 
-    DR[00] = 0                   DR[01] = 0                  
-    DR[02] = 4                   DR[03] = 6                  
-    DR[04] = 2                   DR[05] = 5                  
-    DR[06] = 0                   DR[07] = 0                  
-    DR[08] = 1                   DR[09] = 0                  
-    DR[10] = 0                   DR[11] = 0                  
-    DR[12] = 0                   DR[13] = 0                  
-    DR[14] = 0                   DR[15] = 1289               
+    DR[00] = 275                 DR[01] = 1031               
+    DR[02] = 94                  DR[03] = 101                
+    DR[04] = 121                 DR[05] = 13                 
+    DR[06] = 10                  DR[07] = 0                  
+    DR[08] = 112                 DR[09] = 78                 
+    DR[10] = 72                  DR[11] = 88                 
+    DR[12] = 74                  DR[13] = 50                 
+    DR[14] = 53                  DR[15] = 64704              
 
 Address Register usage for 16 bit instructions:
 
     AR[00] = 0                   AR[01] = 0                  
-    AR[02] = 1284                AR[03] = 1280               
-    AR[04] = 0                   AR[05] = 0                  
-    AR[06] = 0                   AR[07] = 0                  
+    AR[02] = 349                 AR[03] = 257                
+    AR[04] = 452                 AR[05] = 281                
+    AR[06] = 5                   AR[07] = 3                  
     AR[08] = 0                   AR[09] = 0                  
-    AR[10] = 1                   AR[11] = 0                  
-    AR[12] = 0                   AR[13] = 0                  
-    AR[14] = 0                   AR[15] = 1286               
+    AR[10] = 72                  AR[11] = 50                 
+    AR[12] = 68                  AR[13] = 128                
+    AR[14] = 68                  AR[15] = 357                
