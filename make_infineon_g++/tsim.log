@@ -63,7 +63,7 @@ Simulation complete
 
 Total number of instructions executed =              197202
 Total number of cycles run            =              200000
-Total number of seconds for execution =                1.00 seconds
+Total number of seconds for execution =                2.00 seconds
 Instruction delay count               =              199351
 total number of interrupts fired      = 0
 No Dcache accesses
